@@ -141,7 +141,7 @@ def plotar(indiv, f):
     # plt.show()
     # plt.title("Tempo Requerido: {:.2f}".format(indiv.fitness.values[0]))
     # fig1.savefig(f'{f}.png', dpi=300)
-    fig1.savefig(f'resultados/fu/fu3/{f}.png', dpi=300)
+    fig1.savefig(f'resultados/fu/fu8/{f}.png', dpi=300)
     plt.close()
 
 # def genIndividuo(edges):
@@ -808,7 +808,7 @@ if __name__ == "__main__":
                         # print("Inds: ", iteracao[4], file=file_write)
                         print(file=file_write)
                         dadosExel.append((iteracao[2][0].fitness.values[0], tempoExecution))
-                        plotar(iteracao[2][0], f"fu3" + ' ' + str(k[0]) + ' ' + str(k[1]) + ' ' + str(k[2]))
+                        plotar(iteracao[2][0], f"fu8" + ' ' + str(k[0]) + ' ' + str(k[1]) + ' ' + str(k[2]))
                         fig1, f1_axes = plt.subplots(ncols=1, nrows=1, constrained_layout=True)
                         fig1.set_size_inches((10, 10))
                         gens, inds = iteracao[3], iteracao[4]
