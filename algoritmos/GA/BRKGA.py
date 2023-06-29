@@ -829,5 +829,6 @@ if __name__ == "__main__":
                 sheet.cell(row=linhaExel, column=colunaExel).value = dado[0]
                 colunaExel = colunaExel + 1
                 sheet.cell(row=linhaExel, column=colunaExel).value = dado[1]
+            sheet.cell(row=linhaExel, column=colunaExel).value = 9
             workbook.save('fu.xlsx')
             exit(0)
