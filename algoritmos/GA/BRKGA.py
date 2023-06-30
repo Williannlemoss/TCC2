@@ -141,7 +141,7 @@ def plotar(indiv, f):
     # plt.show()
     # plt.title("Tempo Requerido: {:.2f}".format(indiv.fitness.values[0]))
     # fig1.savefig(f'{f}.png', dpi=300)
-    fig1.savefig(f'resultados/fu/fu8/{f}.png', dpi=300)
+    fig1.savefig(f'resultados/pol4/pol41/{f}.png', dpi=300)
     plt.close()
 
 # def genIndividuo(edges):
@@ -240,47 +240,6 @@ def directionNext(x, y, isEnd):
         return 0.25
 
 
-    # xMax, xMin, xEqual, yMax, yMin, yEqual = False, False, False, False, False, False
-    #
-    # if isEnd:
-    #     if x[0] == y[0] or x[0] == y[1]:
-    #         xMax, xMin, xEqual, yMax, yMin, yEqual = direction(x[0], x[1])
-    #     if x[1] == y[0] or x[1] == y[1]:
-    #         xMax, xMin, xEqual, yMax, yMin, yEqual = direction(x[1], x[0])
-    # elif x[0] == y[0] or x[0] == y[1]:
-    #     xMax, xMin, xEqual, yMax, yMin, yEqual = direction(x[1], x[0])
-    # elif x[1] == y[0] or x[1] == y[1]:
-    #     xMax, xMin, xEqual, yMax, yMin, yEqual = direction(x[0], x[1])
-    # else:
-    #     return random.random()
-    #
-    #
-    # isHorizontal = x[0][1] == x[1][1]
-    # if isHorizontal:
-    #     if xMin:
-    #         return 0.75
-    #
-    #     if xMax:
-    #         return 0.25
-    #
-    # isVertical = x[0][0] == x[1][0]
-    # if isVertical:
-    #     if yMin:
-    #         return 0.25
-    #
-    #     if yMax:
-    #         return 0.75
-    #
-    # if x[0] in y:
-    #     if x[1][1] > x[0][1]:
-    #         return 0.75
-    #     return 0.25
-    #
-    # if x[0][1] > x[1][1]:
-    #     return 0.75
-    # return 0.25
-
-
 
 def genIndividuoRK(edges):
     """
@@ -297,7 +256,7 @@ def genIndividuoRK(edges):
 
     size = len(listImpar)
     if size != 2:
-        individuos =  [random.random() for i in range(len(edges))], [
+        individuos = [random.random() for i in range(len(edges))], [
             random.random() for i in range(len(edges))]
         return individuos
 
@@ -415,8 +374,6 @@ def decode(ind):
         listDirOrd.append(0 if ind[1][index] < 0.5 else 1)
 
     return[listIndOrd, listDirOrd]
-    # dec =  [ind[0].index(i) for i in sorted(ind[0])], [0 if i < 0.5 else 1 for i in ind[1]]
-    # return dec
 
 
 def evalCut(individuo, pi=100 / 6, mi=400):
@@ -680,6 +637,10 @@ def preProcess(file):
 
             listEdger.append([(vertices[0], vertices[1]), (vertices[2], vertices[3])])
 
+    isPreProcess = random.random()
+    if isPreProcess < 0.5:
+        return listEdger
+
     while listImpar:
         if len(listImpar) == 2 or len(listImpar) == 0:
             break
@@ -688,7 +649,7 @@ def preProcess(file):
             listEdger.append([vertex, vertex, 'D'])
 
         else:
-            index = random.randint(0, len(listImpar) -1)
+            index = random.randint(0, len(listImpar) - 1)
             vertex = listImpar.pop(index)
             x, y, isOdd = removeOddVerteces(vertex, listImpar, listPar, listEdger)
             listPar.append(vertex)
@@ -710,14 +671,16 @@ def preProcess(file):
 
 #10 execuções calcular desvio, media, pior e melhor
 files = [
-    # 'instance_01_2pol', #esse
+    # 'fu',# esse OK
+    # 'instance_01_2pol', #esse OK
+    'instance_01_4pol', #esse
     #'albano',
     # 'blaz1',
     # 'blaz2',
     # 'blaz3',
     # 'dighe1',
     # 'dighe2',
-     'fu',# esse
+    # 'fu',# esse
     # 'instance_01_3pol',
     # 'instance_01_6pol',
     # 'instance_01_7pol',
@@ -808,7 +771,7 @@ if __name__ == "__main__":
                         # print("Inds: ", iteracao[4], file=file_write)
                         print(file=file_write)
                         dadosExel.append((iteracao[2][0].fitness.values[0], tempoExecution))
-                        plotar(iteracao[2][0], f"fu8" + ' ' + str(k[0]) + ' ' + str(k[1]) + ' ' + str(k[2]))
+                        plotar(iteracao[2][0], f"pol41" + ' ' + str(k[0]) + ' ' + str(k[1]) + ' ' + str(k[2]))
                         fig1, f1_axes = plt.subplots(ncols=1, nrows=1, constrained_layout=True)
                         fig1.set_size_inches((10, 10))
                         gens, inds = iteracao[3], iteracao[4]
@@ -819,7 +782,7 @@ if __name__ == "__main__":
                         f1_axes.set_ylim(inds[-1] - 10, inds[0] + 10)
                         f1_axes.plot(gens, inds, color='blue')
                         plt.close()
-            workbook = openpyxl.load_workbook('fu.xlsx')
+            workbook = openpyxl.load_workbook('pol4.xlsx')
             sheet = workbook.active
             ultima_linha = sheet.max_row
             linhaExel = ultima_linha + 1
@@ -829,5 +792,6 @@ if __name__ == "__main__":
                 sheet.cell(row=linhaExel, column=colunaExel).value = dado[0]
                 colunaExel = colunaExel + 1
                 sheet.cell(row=linhaExel, column=colunaExel).value = dado[1]
-            workbook.save('fu.xlsx')
+            sheet.cell(row=linhaExel, column=colunaExel).value = 7
+            workbook.save('pol4.xlsx')
             exit(0)
