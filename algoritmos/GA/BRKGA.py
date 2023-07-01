@@ -141,7 +141,7 @@ def plotar(indiv, f):
     # plt.show()
     # plt.title("Tempo Requerido: {:.2f}".format(indiv.fitness.values[0]))
     # fig1.savefig(f'{f}.png', dpi=300)
-    fig1.savefig(f'resultados/pol5/pol51/{f}.png', dpi=300)
+    fig1.savefig(f'resultados/pol5/newAlbano/{f}.png', dpi=300)
     plt.close()
 
 # def genIndividuo(edges):
@@ -674,8 +674,8 @@ files = [
     # 'fu',# esse OK
     # 'instance_01_2pol', #esse OK
     #'instance_01_4pol', #esse OK
-    'instance_01_5pol', #esse
-    #'albano',
+    # 'instance_01_5pol', #esse OK
+    'albano',  #esse
     # 'blaz1',
     # 'blaz2',
     # 'blaz3',
@@ -720,79 +720,81 @@ if __name__ == "__main__":
         for f in files:
             file = open(f"../../datasets/particao_arestas/ejor/{t}/{f}.txt").read(
             ).strip().split('\n')
-            edges = []
-            if file:
-                edges = preProcess(file)
-            # Generate Individual
-            toolbox.register("indices", genIndividuoRK, edges)
-            # initializ individual
-            toolbox.register(
-                "individual",
-                tools.initIterate,
-                creator.Individual,
-                toolbox.indices
-            )
-            # plotar(individuo, 'iteracao')
-            # exit(0)
-            # Generate Population
-            toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-            # Objective Function
-            toolbox.register("evaluate", evalCut)
-            # function to execute map
-            toolbox.register("map", map)
+            for indexExecution in range(10):
 
-            hof = None
-            jaja = 0
-            for k in op:
-                jaja = jaja + 1
-                qtd = 1
-                if True:
-                    file_write = None
-                # with open(f"resultados/brkga/{t}/{f}_[{k[0]},{k[1]},{k[2]}].txt", mode='w+') as \
-                #         file_write:
-                    print("BRKGA:", file=file_write)
-                    print(file=file_write)
-                    for i in range(qtd):
-                        print(f"Execução {jaja}:", file=file_write)
-                        print(
-                            f"Parametros: P={k[0]}, Pe={k[1]}, Pm={k[2]}, pe=0.7, Parada=150",
-                            file=file_write
-                        )
-                        iteracao = None
-                        with timeit(file_write=file_write):
-                            iteracao = main(
-                                P=k[0],
-                                Pe=k[1],
-                                Pm=k[2],
+                edges = []
+                if file:
+                    edges = preProcess(file)
+                # Generate Individual
+                toolbox.register("indices", genIndividuoRK, edges)
+                # initializ individual
+                toolbox.register(
+                    "individual",
+                    tools.initIterate,
+                    creator.Individual,
+                    toolbox.indices
+                )
+                # plotar(individuo, 'iteracao')
+                # exit(0)
+                # Generate Population
+                toolbox.register("population", tools.initRepeat, list, toolbox.individual)
+                # Objective Function
+                toolbox.register("evaluate", evalCut)
+                # function to execute map
+                toolbox.register("map", map)
+
+                hof = None
+                jaja = 0
+                for k in op:
+                    jaja = jaja + 1
+                    qtd = 1
+                    if True:
+                        file_write = None
+                    # with open(f"resultados/brkga/{t}/{f}_[{k[0]},{k[1]},{k[2]}].txt", mode='w+') as \
+                    #         file_write:
+                        print("BRKGA:", file=file_write)
+                        print(file=file_write)
+                        for i in range(qtd):
+                            print(f"Execução {indexExecution} {jaja}:", file=file_write)
+                            print(
+                                f"Parametros: P={k[0]}, Pe={k[1]}, Pm={k[2]}, pe=0.7, Parada=150",
                                 file=file_write
                             )
-                        # print("Individuo:", decode(iteracao[2][0]), file=file_write)
-                        print("Fitness: ", iteracao[2][0].fitness.values[0], file=file_write)
-                        # print("Gens: ", iteracao[3], file=file_write)
-                        # print("Inds: ", iteracao[4], file=file_write)
-                        print(file=file_write)
-                        dadosExel.append((iteracao[2][0].fitness.values[0], tempoExecution))
-                        plotar(iteracao[2][0], f"pol51" + str(k[0]) + ' ' + str(k[1]) + ' ' + str(k[2]))
-                        fig1, f1_axes = plt.subplots(ncols=1, nrows=1, constrained_layout=True)
-                        fig1.set_size_inches((10, 10))
-                        gens, inds = iteracao[3], iteracao[4]
-                        f1_axes.set_ylabel("Valor do Melhor Individuo")
-                        f1_axes.set_xlabel("Gerações")
-                        f1_axes.grid(True)
-                        f1_axes.set_xlim(0, gens[-1])
-                        f1_axes.set_ylim(inds[-1] - 10, inds[0] + 10)
-                        f1_axes.plot(gens, inds, color='blue')
-                        plt.close()
-            workbook = openpyxl.load_workbook('pol5.xlsx')
-            sheet = workbook.active
-            ultima_linha = sheet.max_row
-            linhaExel = ultima_linha + 1
-            colunaExel = 0
-            for dado in dadosExel:
-                colunaExel = colunaExel + 1
-                sheet.cell(row=linhaExel, column=colunaExel).value = dado[0]
-                colunaExel = colunaExel + 1
-                sheet.cell(row=linhaExel, column=colunaExel).value = dado[1]
-            sheet.cell(row=linhaExel, column=colunaExel).value = 7
-            workbook.save('pol5.xlsx')
+                            iteracao = None
+                            with timeit(file_write=file_write):
+                                iteracao = main(
+                                    P=k[0],
+                                    Pe=k[1],
+                                    Pm=k[2],
+                                    file=file_write
+                                )
+                            # print("Individuo:", decode(iteracao[2][0]), file=file_write)
+                            print("Fitness: ", iteracao[2][0].fitness.values[0], file=file_write)
+                            # print("Gens: ", iteracao[3], file=file_write)
+                            # print("Inds: ", iteracao[4], file=file_write)
+                            print(file=file_write)
+                            dadosExel.append((iteracao[2][0].fitness.values[0], tempoExecution))
+                            plotar(iteracao[2][0], f"albano" + str(indexExecution + 1) + str(k[0]) + ' ' + str(k[1]) + ' ' + str(k[2]))
+                            fig1, f1_axes = plt.subplots(ncols=1, nrows=1, constrained_layout=True)
+                            fig1.set_size_inches((10, 10))
+                            gens, inds = iteracao[3], iteracao[4]
+                            f1_axes.set_ylabel("Valor do Melhor Individuo")
+                            f1_axes.set_xlabel("Gerações")
+                            f1_axes.grid(True)
+                            f1_axes.set_xlim(0, gens[-1])
+                            f1_axes.set_ylim(inds[-1] - 10, inds[0] + 10)
+                            f1_axes.plot(gens, inds, color='blue')
+                            plt.close()
+                workbook = openpyxl.load_workbook('newAlbano.xlsx')
+                sheet = workbook.active
+                ultima_linha = sheet.max_row
+                linhaExel = ultima_linha + 1
+                colunaExel = 1
+                sheet.cell(row=linhaExel, column=colunaExel).value = indexExecution + 1
+                for dado in dadosExel:
+                    colunaExel = colunaExel + 1
+                    sheet.cell(row=linhaExel, column=colunaExel).value = dado[0]
+                    colunaExel = colunaExel + 1
+                    sheet.cell(row=linhaExel, column=colunaExel).value = dado[1]
+                workbook.save('newAlbano.xlsx')
             exit(0)
