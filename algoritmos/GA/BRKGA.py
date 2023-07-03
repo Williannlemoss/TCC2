@@ -1,6 +1,5 @@
 """Genetic Algorithm."""
 import copy
-import math
 import random
 from builtins import list
 from contextlib import contextmanager
@@ -13,8 +12,6 @@ import numpy
 from deap import base
 from deap import creator
 from deap import tools
-from pygments.lexer import words
-from sympy import yn
 
 dadosExel = []
 listImpar = []
@@ -48,8 +45,6 @@ def plotar(indiv, f):
     individuo = decode(indiv)
     # individuo = indiv
     fig1, f1_axes = plt.subplots(ncols=1, nrows=1, constrained_layout=True)
-    # fig1.figure(figsize=(15, 15))
-    # fig1.set_size_inches((10, 10))
     x1, y1, x, y = [], [], [], []
     colors = ['red', 'gray', 'yellow']
     cutA = 1
@@ -138,26 +133,8 @@ def plotar(indiv, f):
                        scale_units='xy', angles='xy', scale=1, color=colors[1])
     f1_axes.set_xlim(*f1_axes.get_xlim())
     f1_axes.set_ylim(*f1_axes.get_ylim())
-    # plt.show()
-    # plt.title("Tempo Requerido: {:.2f}".format(indiv.fitness.values[0]))
-    # fig1.savefig(f'{f}.png', dpi=300)
-    fig1.savefig(f'resultados/dighe1/dighe110/{f}.png', dpi=300)
+    fig1.savefig(f'resultados/shapes2/shapes210/{f}.png', dpi=300)
     plt.close()
-
-# def genIndividuo(edges):
-#     """
-#     Generate Individuo.
-#
-#     args:
-#         edges -> edges to cut of grapth
-#
-#     individuo[0]: order of edges
-#     individuo[1]: order of cut
-#
-#     """
-#     v = [random.randint(0, 1) for i in range(len(edges))]
-#     random.shuffle(v)
-#     return random.sample(range(len(edges)), len(edges)), v
 
 def selectNext(x, listKK):
     select = None
@@ -204,8 +181,6 @@ def selectNext(x, listKK):
     return select
 
 def direction(p1, p2):
-    p11 = p1
-    p22 = p2
     xMax = p1[0] > p2[0]
     xMin = p1[0] < p2[0]
     xEqual = p1[0] == p2[0]
@@ -227,19 +202,6 @@ def newDirectionNext(after, next, isFirst):
         if after[1] == next[1]:
             return 0.75
         return random.random()
-
-def directionNext(x, y, isEnd):
-
-    if x[0] == y[0]:
-        return 0.75
-    if x[0] == y[1]:
-        return 0.75
-    if x[1] == y[0]:
-        return 0.25
-    if x[1] == y[0]:
-        return 0.25
-
-
 
 def genIndividuoRK(edges):
     """
@@ -486,8 +448,6 @@ def main(P=1000, Pe=0.2, Pm=0.3, pe=0.7, NumGenWithoutConverge=100, file=None):
 
     # Evaluate the entire population
     list(toolbox.map(toolbox.evaluate, pop))
-    # for i in pop:
-    #     toolbox.evaluate(i)
     melhor = numpy.min([i.fitness.values for i in pop])
     logbook = tools.Logbook()
     p = stats.compile(pop)
@@ -663,7 +623,7 @@ def preProcess(file):
                 listPar.remove((x, y))
 
             if x is None and y is None:
-                listEdger.append([vertex, vertex], 'D')
+                listEdger.append([vertex, vertex, 'D'])
             else:
                 listEdger.append([vertex, (x, y), 'D'])
 
@@ -672,39 +632,17 @@ def preProcess(file):
 
 #10 execuções calcular desvio, media, pior e melhor
 files = [
-    # 'fu',# esse OK
+    # 'albano' #esse OK
+    # 'fu', #esse OK
     # 'instance_01_2pol', #esse OK
     # 'instance_01_4pol', #esse OK
     # 'instance_01_5pol', #esse OK
     # 'instance_01_9pol', #esse OK
-    'dighe1', #esse
-    # 'albano',  #esse
-    # 'blaz1',
-    # 'blaz2',
-    # 'blaz3',
-    # 'dighe1',
-    # 'dighe2',
-
-    # 'instance_01_6pol',
-    # 'instance_01_7pol',
-    # 'instance_01_8pol', esse
-
-    # 'instance_01_10pol',
-    # 'instance_01_16pol', esse
-    # 'instance_artificial_01_26pol_hole', esse
-    # 'rco1', esse
-    # 'rco2', esse
-    #     'rco3',
-    # 'shapes2', esse
-    # 'shapes4', esse
-    # 'spfc_instance',
-    #'trousers',
-    #'TROUSERS',
+    # 'dighe1', #esse OK
+    'shapes2' # esse
 ]
-#100 5000 1000 3 2 1 1 15 2
+
 opcoes = {'pop': [500, 1000, 5000], 'elite': [.3, .25, .20], 'mut': [.05, .10, .15]}
-#opcoes = {'pop': [1000, 5000, 10000], 'elite': [.30, .20, .10], 'mut': [.10, .15, .20]}
-# opcoes = {'pop': [5000], 'elite': [.30], 'mut': [.10]}
 op = []
 for i in opcoes['pop']:
     for j in opcoes['elite']:
@@ -776,7 +714,7 @@ if __name__ == "__main__":
                         # print("Inds: ", iteracao[4], file=file_write)
                         print(file=file_write)
                         dadosExel.append((iteracao[2][0].fitness.values[0], tempoExecution))
-                        plotar(iteracao[2][0], f"dighe110" + str(k[0]) + ' ' + str(k[1]) + ' ' + str(k[2]))
+                        plotar(iteracao[2][0], f"shapes210" + str(k[0]) + ' ' + str(k[1]) + ' ' + str(k[2]))
                         fig1, f1_axes = plt.subplots(ncols=1, nrows=1, constrained_layout=True)
                         fig1.set_size_inches((10, 10))
                         gens, inds = iteracao[3], iteracao[4]
@@ -787,7 +725,7 @@ if __name__ == "__main__":
                         f1_axes.set_ylim(inds[-1] - 10, inds[0] + 10)
                         f1_axes.plot(gens, inds, color='blue')
                         plt.close()
-            workbook = openpyxl.load_workbook('dighe1.xlsx')
+            workbook = openpyxl.load_workbook('shapes2.xlsx')
             sheet = workbook.active
             ultima_linha = sheet.max_row
             linhaExel = ultima_linha + 1
@@ -797,5 +735,5 @@ if __name__ == "__main__":
                 sheet.cell(row=linhaExel, column=colunaExel).value = dado[0]
                 colunaExel = colunaExel + 1
                 sheet.cell(row=linhaExel, column=colunaExel).value = dado[1]
-            workbook.save('dighe1.xlsx')
+            workbook.save('shapes2.xlsx')
             exit(0)
