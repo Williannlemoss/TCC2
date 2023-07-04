@@ -133,7 +133,7 @@ def plotar(indiv, f):
                        scale_units='xy', angles='xy', scale=1, color=colors[1])
     f1_axes.set_xlim(*f1_axes.get_xlim())
     f1_axes.set_ylim(*f1_axes.get_ylim())
-    fig1.savefig(f'resultados/shapes2/shapes210/{f}.png', dpi=300)
+    fig1.savefig(f'resultados/rco3/rco310/{f}.png', dpi=300)
     plt.close()
 
 def selectNext(x, listKK):
@@ -639,7 +639,8 @@ files = [
     # 'instance_01_5pol', #esse OK
     # 'instance_01_9pol', #esse OK
     # 'dighe1', #esse OK
-    'shapes2' # esse
+    # 'shapes2' # esse OK
+     'rco3' # esse OK
 ]
 
 opcoes = {'pop': [500, 1000, 5000], 'elite': [.3, .25, .20], 'mut': [.05, .10, .15]}
@@ -714,7 +715,7 @@ if __name__ == "__main__":
                         # print("Inds: ", iteracao[4], file=file_write)
                         print(file=file_write)
                         dadosExel.append((iteracao[2][0].fitness.values[0], tempoExecution))
-                        plotar(iteracao[2][0], f"shapes210" + str(k[0]) + ' ' + str(k[1]) + ' ' + str(k[2]))
+                        plotar(iteracao[2][0], f"rco310" + str(k[0]) + ' ' + str(k[1]) + ' ' + str(k[2]))
                         fig1, f1_axes = plt.subplots(ncols=1, nrows=1, constrained_layout=True)
                         fig1.set_size_inches((10, 10))
                         gens, inds = iteracao[3], iteracao[4]
@@ -725,7 +726,7 @@ if __name__ == "__main__":
                         f1_axes.set_ylim(inds[-1] - 10, inds[0] + 10)
                         f1_axes.plot(gens, inds, color='blue')
                         plt.close()
-            workbook = openpyxl.load_workbook('shapes2.xlsx')
+            workbook = openpyxl.load_workbook('rco3.xlsx')
             sheet = workbook.active
             ultima_linha = sheet.max_row
             linhaExel = ultima_linha + 1
@@ -735,5 +736,5 @@ if __name__ == "__main__":
                 sheet.cell(row=linhaExel, column=colunaExel).value = dado[0]
                 colunaExel = colunaExel + 1
                 sheet.cell(row=linhaExel, column=colunaExel).value = dado[1]
-            workbook.save('shapes2.xlsx')
+            workbook.save('rco3.xlsx')
             exit(0)
