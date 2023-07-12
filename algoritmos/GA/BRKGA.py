@@ -726,15 +726,4 @@ if __name__ == "__main__":
                         f1_axes.set_ylim(inds[-1] - 10, inds[0] + 10)
                         f1_axes.plot(gens, inds, color='blue')
                         plt.close()
-            workbook = openpyxl.load_workbook('rco3.xlsx')
-            sheet = workbook.active
-            ultima_linha = sheet.max_row
-            linhaExel = ultima_linha + 1
-            colunaExel = 0
-            for dado in dadosExel:
-                colunaExel = colunaExel + 1
-                sheet.cell(row=linhaExel, column=colunaExel).value = dado[0]
-                colunaExel = colunaExel + 1
-                sheet.cell(row=linhaExel, column=colunaExel).value = dado[1]
-            workbook.save('rco3.xlsx')
             exit(0)
